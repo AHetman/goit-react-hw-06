@@ -1,0 +1,31 @@
+.contact {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  width: 250px;
+}
+
+.dataContact {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.text {
+  margin-bottom: 4px;
+  margin-top: 4px;
+}
+
+.btn {
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  height: 40px;
+  border: 2px solid rgb(49, 45, 45);
+  border-radius: 4px;
+  background-color: rgb(223, 222, 222);
+}
