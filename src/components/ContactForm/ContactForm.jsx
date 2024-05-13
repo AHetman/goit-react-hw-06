@@ -1,47 +1,64 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { nanoid } from "nanoid";
 import { useId } from "react";
+import { useDispatch } from "react-redux";
+import { addContact } from "../../redux/contactsSlice";
+import * as Yup from "yup";
+
 import css from "./ContactForm.module.css";
 
-const ContactForm = ({ validation, initialContact, onAdd }) => {
-  const nameFieldId = useId();
-  const phoneFieldId = useId();
+const Feedback = Yup.object({
+  name: Yup.string()
+    .min(3, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  number: Yup.string()
+    .min(3, "Too short")
+    .max(50, "Too long")
+    .required("Required"),
+});
 
-  const handleSubmit = (values, actions) => {
-    const nextContact = {
-      ...values,
-      id: nanoid(),
-    };
-    onAdd(nextContact);
-    actions.resetForm();
+const initialValues = {
+  name: "",
+  number: "",
+};
+
+const ContactForm = () => {
+  const dispatch = useDispatch();
+  const nameId = useId();
+  const phoneId = useId();
+
+  const handleSubmit = ({ name, number }, { resetForm }) => {
+    const contactName = name.trim();
+    dispatch(addContact(contactName, number));
+    resetForm();
   };
 
   return (
     <Formik
-      initialValues={initialContact}
+      initialValues={initialValues}
       onSubmit={handleSubmit}
-      validationSchema={validation}
+      validationSchema={Feedback}
     >
       <Form className={css.form}>
         <div className={css.formItem}>
-          <label htmlFor={nameFieldId}>Name</label>
+          <label htmlFor={nameId}>Name</label>
           <Field
             className={css.field}
             type="text"
             name="name"
-            id={nameFieldId}
+            id={nameId}
             placeholder="name"
           />
           <ErrorMessage name="name" component="span" />
         </div>
 
         <div className={css.formItem}>
-          <label htmlFor={phoneFieldId}>Number</label>
+          <label htmlFor={phoneId}>Number</label>
           <Field
             className={css.field}
             type="tel"
             name="number"
-            id={phoneFieldId}
+            id={phoneId}
             placeholder="number"
           />
           <ErrorMessage name="number" component="span" />
